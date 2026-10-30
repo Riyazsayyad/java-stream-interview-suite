@@ -1,0 +1,40 @@
+package com.riyaz.streampractice.level5;
+
+import com.riyaz.streampractice.common.TestDataFactory;
+import com.riyaz.streampractice.model.*;
+import java.util.*;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import com.riyaz.streampractice.reference.level5.Problem41Reference;
+
+class Level5Problem41ReferenceTest {
+
+
+    @Test
+    void shouldFlattenNestedLists() {
+        assertEquals(List.of(1, 2, 3, 4), Problem41Reference.solve(List.of(List.of(1, 2), List.of(3, 4))));
+    }
+
+    @Test
+    void shouldHandleEmptyOuterList() {
+        assertEquals(List.of(), Problem41Reference.solve(List.of()));
+    }
+
+    @Test
+    void shouldHandleEmptyInnerLists() {
+        assertEquals(List.of(), Problem41Reference.solve(List.of(List.of(), List.of())));
+    }
+
+    @Test
+    void shouldHandleNullOuterList() {
+        assertEquals(List.of(), Problem41Reference.solve(null));
+    }
+
+    @Test
+    void shouldPreserveOrder() {
+        assertEquals(List.of(1, 2, 3), Problem41Reference.solve(List.of(List.of(1), List.of(2, 3))));
+    }
+
+}
