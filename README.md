@@ -12,7 +12,7 @@ Set `JAVA_HOME` if the wrapper reports it missing.
 ## Setup
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/Riyazsayyad/java-stream-interview-suite.git
 cd java-stream-interview-suite
 ```
 
