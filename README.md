@@ -20,9 +20,11 @@ Open the project in IntelliJ IDEA as a Maven project. Mark `src/main/java` and `
 
 ## Running tests
 
-### Reference solutions (default, should pass)
+**Default behavior:** `mvn test` runs **your** problem tests only (`LevelNProblemXTest`). Stubs throw `UnsupportedOperationException`, so the build **fails** until you implement `solve()`. That is intentional.
 
-Validates all 50 reference implementations (250 tests):
+### All problems (your code)
+
+250 tests — fails while TODO stubs remain:
 
 ```bash
 ./mvnw clean test
@@ -30,28 +32,50 @@ Validates all 50 reference implementations (250 tests):
 mvnw.cmd clean test
 ```
 
-### Your implementations (expect failures until you code them)
+### One level (Maven profiles)
 
-Runs candidate + reference tests (500 tests; 250 fail until stubs are implemented):
+Each profile runs only **your** tests for that level (50 tests per level, 10 problems × 5 cases):
+
+| Level | Command |
+|-------|---------|
+| 1 | `./mvnw test -Plevel1` |
+| 2 | `./mvnw test -Plevel2` |
+| 3 | `./mvnw test -Plevel3` |
+| 4 | `./mvnw test -Plevel4` |
+| 5 | `./mvnw test -Plevel5` |
+
+Windows: `mvnw.cmd test -Plevel1` (same pattern).
+
+### Reference solutions (should always pass)
+
+Use when checking the bundled answers, not your stubs:
 
 ```bash
-./mvnw test -Ppractice
-```
-
-### Single problem
-
-```bash
-./mvnw -Dtest=Level2Problem11Test test
-./mvnw -Dtest=Level2Problem11ReferenceTest test
-```
-
-### Entire level
-
-Class names include the level digit, so patterns like these work:
-
-```bash
-./mvnw -Dtest="*Level1*" test
+./mvnw test -Preference
 ./mvnw -Dtest="*Level1*ReferenceTest" test
+```
+
+### Single problem (nested class inside level file)
+
+```bash
+./mvnw -Dtest=Level1Test#Problem1Tests test
+./mvnw -Dtest=Level2Test\$Problem11Tests test   # escape $ in bash
+# Windows PowerShell
+mvnw.cmd "-Dtest=Level1Test`$Problem1Tests" test
+```
+
+Reference checks for one problem:
+
+```bash
+mvnw.cmd "-Dtest=Level1ReferenceTest`$Problem1Tests" test
+```
+
+### Everything (yours + reference)
+
+500 tests:
+
+```bash
+./mvnw test -Pall-tests
 ```
 
 ## How to practice
@@ -59,7 +83,7 @@ Class names include the level digit, so patterns like these work:
 1. Open `src/main/java/com/riyaz/streampractice/problems/levelN/ProblemX.java`.
 2. Read the JavaDoc (difficulty, concepts, pitfalls, follow-ups).
 3. Replace the `TODO` in `solve(...)` with your Stream solution.
-4. Run `LevelNProblemXTest` until green.
+4. Run `LevelNTest` (or nested `ProblemXTests`) until green.
 5. Compare with `reference/levelN/ProblemXReference.java` only after you attempt the problem.
 
 ## Difficulty levels
@@ -137,7 +161,7 @@ src/main/java/com/riyaz/streampractice/
   common/TestDataFactory    # Sample data
 
 src/test/java/com/riyaz/streampractice/
-  level1..level5            # *Test and *ReferenceTest classes
+  level1..level5            # Level1Test + Level1ReferenceTest (10 problems each, @Nested)
 ```
 
 ## Regenerating sources

@@ -740,53 +740,107 @@ TESTS = {}  # filled below in same run via exec from tests fragment
 exec(open(Path(__file__).parent / "test_cases.py", encoding="utf-8").read())
 
 
-def gen_tests(n: int) -> None:
-    lvl = level_for(n)
-    cls = f"Problem{n}"
-    pkg_prob = f"com.riyaz.streampractice.problems.{lvl}"
-    pkg_ref = f"com.riyaz.streampractice.reference.{lvl}"
-    test_pkg = f"com.riyaz.streampractice.{lvl}"
+def cleanup_legacy_test_files() -> None:
+    for path in TEST.rglob("*Problem*Test.java"):
+        path.unlink()
 
-    candidate = TESTS[f"candidate_{n}"]
-    reference = TESTS[f"reference_{n}"]
+
+def problem_range(level: int) -> range:
+    start = (level - 1) * 10 + 1
+    return range(start, start + 10)
+
+
+def indent_block(text: str, spaces: int) -> str:
+    pad = " " * spaces
+    lines = []
+    for line in text.splitlines():
+        if line.strip():
+            lines.append(pad + line)
+        else:
+            lines.append("")
+    return "\n".join(lines) + ("\n" if text.endswith("\n") else "")
+
+
+def gen_level_tests(level: int) -> None:
+    lvl = f"level{level}"
+    test_pkg = f"com.riyaz.streampractice.{lvl}"
+    level_dir = TEST / lvl
+
+    prob_imports = "\n".join(
+        f"import com.riyaz.streampractice.problems.{lvl}.Problem{i};"
+        for i in problem_range(level)
+    )
+    ref_imports = "\n".join(
+        f"import com.riyaz.streampractice.reference.{lvl}.Problem{i}Reference;"
+        for i in problem_range(level)
+    )
 
     test_imports = """import com.riyaz.streampractice.common.TestDataFactory;
 import com.riyaz.streampractice.model.*;
 import java.util.*;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 """
 
+    nested_candidate = ""
+    nested_reference = ""
+    for i in problem_range(level):
+        title = META[i][0]
+        candidate_body = TESTS[f"candidate_{i}"]
+        reference_body = TESTS[f"reference_{i}"]
+        nested_candidate += f"""
+    @Nested
+    @DisplayName("Problem {i}: {title}")
+    class Problem{i}Tests {{
+{indent_block(candidate_body, 8)}    }}
+"""
+        nested_reference += f"""
+    @Nested
+    @DisplayName("Problem {i}: {title}")
+    class Problem{i}Tests {{
+{indent_block(reference_body, 8)}    }}
+"""
+
     cand_src = f"""package {test_pkg};
 
 {test_imports}
-import {pkg_prob}.{cls};
+{prob_imports}
 
-class Level{lvl[-1]}Problem{n}Test {{
-
-{candidate}
+/** Candidate tests for level {level} (problems {problem_range(level).start}–{problem_range(level).stop - 1}). */
+class Level{level}Test {{
+{nested_candidate}
 }}
 """
     ref_src = f"""package {test_pkg};
 
 {test_imports}
-import {pkg_ref}.{cls}Reference;
+{ref_imports}
 
-class Level{lvl[-1]}Problem{n}ReferenceTest {{
-
-{reference}
+/** Reference solution tests for level {level}. */
+class Level{level}ReferenceTest {{
+{nested_reference}
 }}
 """
-    write_java(TEST / lvl / f"Level{lvl[-1]}Problem{n}Test.java", cand_src)
-    write_java(TEST / lvl / f"Level{lvl[-1]}Problem{n}ReferenceTest.java", ref_src)
+    write_java(level_dir / f"Level{level}Test.java", cand_src)
+    write_java(level_dir / f"Level{level}ReferenceTest.java", ref_src)
 
 
 def main() -> None:
-    for n in range(1, 51):
-        gen_problem(n)
-        gen_tests(n)
-    print("Generated 50 problems, references, and tests.")
+    import sys
+
+    regenerate_problems = "--problems" in sys.argv
+    if regenerate_problems:
+        for n in range(1, 51):
+            gen_problem(n)
+    cleanup_legacy_test_files()
+    for level in range(1, 6):
+        gen_level_tests(level)
+    print("Generated consolidated level tests (Level1Test … Level5Test).")
+    if not regenerate_problems:
+        print("Problem stubs untouched (pass --problems to regenerate stubs).")
 
 
 if __name__ == "__main__":

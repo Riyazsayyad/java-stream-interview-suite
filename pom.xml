@@ -15,6 +15,9 @@
         <maven.compiler.release>17</maven.compiler.release>
         <junit.version>5.10.2</junit.version>
         <assertj.version>3.25.3</assertj.version>
+        <!-- Candidate tests only: Level1Test … Level5Test (not *ReferenceTest). -->
+        <surefire.includes>**/Level?Test.java</surefire.includes>
+        <surefire.excludes>**/*ReferenceTest.java</surefire.excludes>
     </properties>
 
     <dependencies>
@@ -48,8 +51,11 @@
                 <version>3.2.5</version>
                 <configuration>
                     <includes>
-                        <include>**/*ReferenceTest.java</include>
+                        <include>${surefire.includes}</include>
                     </includes>
+                    <excludes>
+                        <exclude>${surefire.excludes}</exclude>
+                    </excludes>
                 </configuration>
             </plugin>
         </plugins>
@@ -57,21 +63,53 @@
 
     <profiles>
         <profile>
-            <id>practice</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <configuration combine.self="override">
-                            <includes>
-                                <include>**/*Test.java</include>
-                                <include>**/*ReferenceTest.java</include>
-                            </includes>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
+            <id>reference</id>
+            <properties>
+                <surefire.includes>**/Level?ReferenceTest.java</surefire.includes>
+                <surefire.excludes>**/NONE.java</surefire.excludes>
+            </properties>
+        </profile>
+        <profile>
+            <id>level1</id>
+            <properties>
+                <surefire.includes>**/Level1Test.java</surefire.includes>
+                <surefire.excludes>**/*ReferenceTest.java</surefire.excludes>
+            </properties>
+        </profile>
+        <profile>
+            <id>level2</id>
+            <properties>
+                <surefire.includes>**/Level2Test.java</surefire.includes>
+                <surefire.excludes>**/*ReferenceTest.java</surefire.excludes>
+            </properties>
+        </profile>
+        <profile>
+            <id>level3</id>
+            <properties>
+                <surefire.includes>**/Level3Test.java</surefire.includes>
+                <surefire.excludes>**/*ReferenceTest.java</surefire.excludes>
+            </properties>
+        </profile>
+        <profile>
+            <id>level4</id>
+            <properties>
+                <surefire.includes>**/Level4Test.java</surefire.includes>
+                <surefire.excludes>**/*ReferenceTest.java</surefire.excludes>
+            </properties>
+        </profile>
+        <profile>
+            <id>level5</id>
+            <properties>
+                <surefire.includes>**/Level5Test.java</surefire.includes>
+                <surefire.excludes>**/*ReferenceTest.java</surefire.excludes>
+            </properties>
+        </profile>
+        <profile>
+            <id>all-tests</id>
+            <properties>
+                <surefire.includes>**/Level*Test.java</surefire.includes>
+                <surefire.excludes>**/NONE.java</surefire.excludes>
+            </properties>
         </profile>
     </profiles>
 </project>

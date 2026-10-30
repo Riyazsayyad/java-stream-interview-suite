@@ -1,7 +1,6 @@
 package com.riyaz.streampractice.problems.level1;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public final class Problem1 {
 
@@ -31,7 +30,11 @@ public final class Problem1 {
  * Example: Input [1, -2, 3, 4] Output [ -2, 4 ]
  */
     public static List<Integer> solve(List<Integer> numbers) {
-        // TODO: Implement your solution.
-        throw new UnsupportedOperationException("Implement Problem 1");
+        if (numbers == null) {
+            return List.of();
+        }
+        return numbers.stream()
+                .filter(n -> n % 2 == 0)
+                .toList();
     }
 }
