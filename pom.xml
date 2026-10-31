@@ -5,10 +5,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.riyaz</groupId>
-    <artifactId>java-stream-interview-suite</artifactId>
+    <artifactId>java-stream-practice-suite</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <name>Java Stream Interview Practice Suite</name>
-    <description>50 curated Java Stream API interview problems with JUnit 5 tests</description>
+    <name>Java Stream Practice Suite</name>
+    <description>50 curated Java Stream API practice problems with JUnit 5 tests</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

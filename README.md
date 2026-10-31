@@ -1,6 +1,6 @@
-# Java Stream Interview Practice Suite
+# Java Stream Practice Suite
 
-Fifty curated Java Stream API problems for backend interview prep. Each problem has a TODO stub, a separate reference solution, and JUnit 5 tests.
+Fifty curated Java Stream API problems for backend developers. Each problem has a TODO stub, a separate reference solution, and JUnit 5 tests.
 
 ## Requirements
 
@@ -12,15 +12,15 @@ Set `JAVA_HOME` if the wrapper reports it missing.
 ## Setup
 
 ```bash
-git clone https://github.com/Riyazsayyad/java-stream-interview-suite.git
-cd java-stream-interview-suite
+git clone https://github.com/Riyazsayyad/java-stream-practice-suite.git
+cd java-stream-practice-suite
 ```
 
 Open the project in IntelliJ IDEA as a Maven project. Mark `src/main/java` and `src/test/java` as source roots if needed.
 
 ## Running tests
 
-**Default behavior:** `mvn test` runs **your** problem tests only (`LevelNProblemXTest`). Stubs throw `UnsupportedOperationException`, so the build **fails** until you implement `solve()`. That is intentional.
+**Default behavior:** `mvn test` runs **your** problem tests only (`LevelNTest`). Stubs throw `UnsupportedOperationException`, so the build **fails** until you implement `solve()`. That is intentional.
 
 ### All problems (your code)
 
@@ -186,4 +186,4 @@ python scripts/generate_suite.py
 
 ## License
 
-Use freely for interview preparation and teaching.
+Use freely for learning and teaching.
