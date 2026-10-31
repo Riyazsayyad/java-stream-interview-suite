@@ -30,11 +30,8 @@ public final class Problem1 {
  * Example: Input [1, -2, 3, 4] Output [ -2, 4 ]
  */
     public static List<Integer> solve(List<Integer> numbers) {
-        if (numbers == null) {
-            return List.of();
-        }
-        return numbers.stream()
-                .filter(n -> n % 2 == 0)
-                .toList();
+
+        // TODO: Implement your solution.
+        throw new UnsupportedOperationException("Implement Problem 1");
     }
 }

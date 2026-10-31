@@ -5,3 +5,6 @@ target/
 .project
 .settings/
 .vscode/
+
+# Local scratch / experiments (never publish)
+src/main/java/com/riyaz/streampractice/problems/**/Custom.java

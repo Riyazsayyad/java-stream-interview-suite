@@ -184,7 +184,10 @@ class Level1Test {
 
             @Test
             void shouldPreserveNullElements() {
-                assertEquals(java.util.Arrays.asList(null, "a"), Problem6.solve(java.util.Arrays.asList(null, "A")));
+                List<String> result = Problem6.solve(java.util.Arrays.asList(null, "A"));
+                assertEquals(2, result.size());
+                assertNull(result.get(0));
+                assertEquals("a", result.get(1));
             }
 
             @Test

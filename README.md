@@ -86,6 +86,18 @@ mvnw.cmd "-Dtest=Level1ReferenceTest`$Problem1Tests" test
 4. Run `LevelNTest` (or nested `ProblemXTests`) until green.
 5. Compare with `reference/levelN/ProblemXReference.java` only after you attempt the problem.
 
+### Keep your solutions local (do not push)
+
+Published repo stays TODO stubs. After you implement a problem, tell Git to ignore your local edits for that file so pulls work and you do not commit solutions:
+
+```bash
+git update-index --skip-worktree src/main/java/com/riyaz/streampractice/problems/level1/Problem1.java
+```
+
+Undo when you want to commit again: `git update-index --no-skip-worktree <path>`.
+
+Repeat per problem file you solve.
+
 ## Difficulty levels
 
 | Level | Folder | Focus |
